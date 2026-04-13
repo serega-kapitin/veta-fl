@@ -1,0 +1,43 @@
+# Editor configuration for Veta-FL project
+
+root = true
+
+# General defaults
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+indent_style = space
+indent_size = 4
+
+# Python files
+[*.py]
+indent_size = 4
+
+# YAML / Docker Compose
+[*.{yml,yaml}]
+indent_size = 2
+
+# JSON
+[*.json]
+indent_size = 2
+
+# JavaScript / React
+[*.{js,jsx,ts,tsx}]
+indent_size = 2
+
+# Markdown
+[*.md]
+indent_size = 2
+
+# Nginx config
+[*.conf]
+indent_size = 4
+
+# Shell scripts
+[*.sh]
+indent_size = 2
+
+# Dockerfile
+[{D,d}ockerfile*]
+indent_size = 2
