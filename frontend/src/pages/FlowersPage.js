@@ -50,13 +50,13 @@ function FlowersPage({ currentUser }) {
           <div className="toolbar-left">
             <button className="btn btn--primary">+ Купить цветок</button>
             <button
-              className="btn btn--secondary"
+              className={`btn ${hasSelection ? 'btn--edit btn--edit--active' : 'btn--edit'}`}
               disabled={!hasSelection}
             >
               Изменить цветок
             </button>
             <button
-              className="btn btn--secondary"
+              className={`btn ${hasSelection ? 'btn--sell btn--sell--active' : 'btn--sell'}`}
               disabled={!hasSelection}
             >
               Продать цветок
@@ -104,12 +104,9 @@ function FlowersPage({ currentUser }) {
                     onClick={() => handleRowClick(flower.id)}
                   >
                     <td className="col-photo">
-                      {flower.foto ? (
+                      {flower.foto_base64 ? (
                         <img
-                          src={`data:image/jpeg;base64,${btoa(
-                            new Uint8Array(flower.foto.data || flower.foto)
-                              .reduce((data, byte) => data + String.fromCharCode(byte), '')
-                          )}`}
+                          src={`data:image/png;base64,${flower.foto_base64}`}
                           alt={flower.name}
                           className="flower-thumb"
                         />

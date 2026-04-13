@@ -154,3 +154,53 @@
   font-weight: 600;
   color: #2e7d32;
 }
+
+/* ===== Action buttons: Edit (yellow) ===== */
+
+.flowers-toolbar .btn--edit {
+  background: #ffffff;
+  color: #424242;
+  border-color: #e0e0e0;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.flowers-toolbar .btn--edit:hover:not(:disabled) {
+  background: #fff9c4;
+}
+
+.flowers-toolbar .btn--edit--active {
+  background: #fff9c4;
+  color: #f57f17;
+  border-color: #fff176;
+  cursor: pointer;
+}
+
+.flowers-toolbar .btn--edit--active:hover {
+  background: #fff176;
+}
+
+/* ===== Action buttons: Sell (pink) ===== */
+
+.flowers-toolbar .btn--sell {
+  background: #ffffff;
+  color: #424242;
+  border-color: #e0e0e0;
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.flowers-toolbar .btn--sell:hover:not(:disabled) {
+  background: #fce4ec;
+}
+
+.flowers-toolbar .btn--sell--active {
+  background: #fce4ec;
+  color: #c2185b;
+  border-color: #f48fb1;
+  cursor: pointer;
+}
+
+.flowers-toolbar .btn--sell--active:hover {
+  background: #f8bbd0;
+}
