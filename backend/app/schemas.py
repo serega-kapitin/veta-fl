@@ -2,6 +2,12 @@ from pydantic import BaseModel
 from datetime import date
 from typing import Optional
 
+
+class AuthRequest(BaseModel):
+    login: str
+    password: str
+
+
 class FlowerResponse(BaseModel):
     id: int
     name: str
