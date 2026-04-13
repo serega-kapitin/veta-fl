@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
 import ProfilePage from './pages/ProfilePage';
 import PrivateRoute from './components/PrivateRoute';
-import { getCurrentUsername } from './services/auth';
+import { getProfile } from './services/auth';
 import './App.css';
 
 function App() {
-  const currentUser = { login: getCurrentUsername() || 'user' };
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const profile = await getProfile();
+        setCurrentUser(profile);
+      } catch {
+        setCurrentUser({ login: 'user', name: null });
+      }
+    };
+    fetchProfile();
+  }, []);
 
   return (
     <BrowserRouter>
@@ -26,7 +38,10 @@ function App() {
           path="/profile"
           element={
             <PrivateRoute>
-              <ProfilePage currentUser={currentUser} />
+              <ProfilePage
+                currentUser={currentUser}
+                onUpdateProfile={setCurrentUser}
+              />
             </PrivateRoute>
           }
         />
