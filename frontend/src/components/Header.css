@@ -1,0 +1,45 @@
+/* ===== Header ===== */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: #ffffff;
+  border-bottom: 1px solid #e8e8e8;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2e7d32;
+  margin: 0;
+}
+
+.header-profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: #f1f8e9;
+  border: 1px solid #c5e1a5;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  font-size: 14px;
+  color: #33691e;
+}
+
+.header-profile-btn:hover {
+  background: #dcedc8;
+  border-color: #aed581;
+}
+
+.header-profile-icon {
+  font-size: 16px;
+}
+
+.header-profile-label {
+  font-weight: 500;
+}
