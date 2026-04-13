@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import SellModal from '../components/SellModal';
@@ -13,6 +13,9 @@ function FlowersPage({ currentUser }) {
   const [sellModalOpen, setSellModalOpen] = useState(false);
   const [sellLoading, setSellLoading] = useState(false);
   const [sellError, setSellError] = useState('');
+
+  // Sorting state: { field, dir } where dir: 'asc' | 'desc' | null
+  const [sort, setSort] = useState({ field: null, dir: null });
 
   const fetchFlowers = async () => {
     setLoading(true);
@@ -66,10 +69,44 @@ function FlowersPage({ currentUser }) {
     setSellError('');
   };
 
+  const handleSortClick = (field) => {
+    setSort((prev) => {
+      if (prev.field !== field) {
+        return { field, dir: 'asc' };
+      }
+      if (prev.dir === 'asc') {
+        return { field, dir: 'desc' };
+      }
+      return { field: null, dir: null };
+    });
+  };
+
+  const sortedFlowers = useMemo(() => {
+    if (!sort.field || !sort.dir) return flowers;
+    return [...flowers].sort((a, b) => {
+      const aVal = a[sort.field];
+      const bVal = b[sort.field];
+      // nulls go last
+      if (aVal == null && bVal == null) return 0;
+      if (aVal == null) return 1;
+      if (bVal == null) return -1;
+      const cmp = aVal < bVal ? -1 : aVal > bVal ? 1 : 0;
+      return sort.dir === 'asc' ? cmp : -cmp;
+    });
+  }, [flowers, sort]);
+
   const formatPrice = (price) =>
     price != null ? `${price.toLocaleString('ru-RU')} ₽` : '—';
 
   const formatDate = (date) => (date ? date : '—');
+
+  const sortableFields = ['buy_price', 'buy_date', 'sell_price', 'sell_date'];
+
+  const SortArrow = ({ field }) => {
+    if (sort.field !== field) return <span className="sort-arrow sort-arrow--inactive">⇅</span>;
+    if (sort.dir === 'asc') return <span className="sort-arrow sort-arrow--active">↑</span>;
+    return <span className="sort-arrow sort-arrow--active">↓</span>;
+  };
 
   return (
     <div className="main-layout">
@@ -122,14 +159,34 @@ function FlowersPage({ currentUser }) {
                 <tr>
                   <th className="col-photo">Фото</th>
                   <th>Название</th>
-                  <th className="col-price">Цена покупки</th>
-                  <th className="col-date">Дата покупки</th>
-                  <th className="col-price">Цена продажи</th>
-                  <th className="col-date">Дата продажи</th>
+                  <th
+                    className={`col-price ${sortableFields.includes('buy_price') ? 'th-sortable' : ''}`}
+                    onClick={() => handleSortClick('buy_price')}
+                  >
+                    Цена покупки <SortArrow field="buy_price" />
+                  </th>
+                  <th
+                    className={`col-date ${sortableFields.includes('buy_date') ? 'th-sortable' : ''}`}
+                    onClick={() => handleSortClick('buy_date')}
+                  >
+                    Дата покупки <SortArrow field="buy_date" />
+                  </th>
+                  <th
+                    className={`col-price ${sortableFields.includes('sell_price') ? 'th-sortable' : ''}`}
+                    onClick={() => handleSortClick('sell_price')}
+                  >
+                    Цена продажи <SortArrow field="sell_price" />
+                  </th>
+                  <th
+                    className={`col-date ${sortableFields.includes('sell_date') ? 'th-sortable' : ''}`}
+                    onClick={() => handleSortClick('sell_date')}
+                  >
+                    Дата продажи <SortArrow field="sell_date" />
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {flowers.map((flower) => (
+                {sortedFlowers.map((flower) => (
                   <tr
                     key={flower.id}
                     className={`flowers-row ${flower.id === selectedId ? 'flowers-row--selected' : ''}`}

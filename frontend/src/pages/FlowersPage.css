@@ -89,6 +89,32 @@
   white-space: nowrap;
 }
 
+.flowers-table .th-sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+
+.flowers-table .th-sortable:hover {
+  background: #eeeeee;
+}
+
+.sort-arrow {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 11px;
+  vertical-align: middle;
+}
+
+.sort-arrow--inactive {
+  color: #bdbdbd;
+}
+
+.sort-arrow--active {
+  color: #2e7d32;
+  font-weight: 700;
+}
+
 .flowers-table td {
   padding: 8px 14px;
   border-bottom: 1px solid #f0f0f0;
@@ -184,14 +210,14 @@
 }
 
 .flowers-toolbar .btn--edit--active {
-  background: #fff9c4;
+  background: #fffd9c;
   color: #f57f17;
-  border-color: #fff176;
+  border-color: #fdd835;
   cursor: pointer;
 }
 
 .flowers-toolbar .btn--edit--active:hover {
-  background: #fff176;
+  background: #fdd835;
 }
 
 /* ===== Action buttons: Sell (pink) ===== */
