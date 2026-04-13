@@ -2,7 +2,8 @@ import React, { useState, useEffect, useMemo } from 'react';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import SellModal from '../components/SellModal';
-import { getFlowers, sellFlower } from '../services/flowers';
+import EditModal from '../components/EditModal';
+import { getFlowers, sellFlower, updateFlowerPhoto } from '../services/flowers';
 import './FlowersPage.css';
 
 function FlowersPage({ currentUser }) {
@@ -13,6 +14,8 @@ function FlowersPage({ currentUser }) {
   const [sellModalOpen, setSellModalOpen] = useState(false);
   const [sellLoading, setSellLoading] = useState(false);
   const [sellError, setSellError] = useState('');
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [editLoading, setEditLoading] = useState(false);
 
   // Sorting state: { field, dir } where dir: 'asc' | 'desc' | null
   const [sort, setSort] = useState({ field: null, dir: null });
@@ -69,6 +72,23 @@ function FlowersPage({ currentUser }) {
     setSellError('');
   };
 
+  const handleEditClick = () => {
+    if (hasSelection) {
+      setEditModalOpen(true);
+    }
+  };
+
+  const handleEditConfirm = async (file) => {
+    setEditLoading(true);
+    await updateFlowerPhoto(selectedId, file);
+    setEditLoading(false);
+    fetchFlowers();
+  };
+
+  const handleEditCancel = () => {
+    setEditModalOpen(false);
+  };
+
   const handleSortClick = (field) => {
     setSort((prev) => {
       if (prev.field !== field) {
@@ -120,6 +140,7 @@ function FlowersPage({ currentUser }) {
             <button
               className={`btn ${hasSelection ? 'btn--edit btn--edit--active' : 'btn--edit'}`}
               disabled={!hasSelection}
+              onClick={handleEditClick}
             >
               Изменить цветок
             </button>
@@ -237,6 +258,15 @@ function FlowersPage({ currentUser }) {
           onConfirm={handleSellConfirm}
           onCancel={handleSellCancel}
           loading={sellLoading}
+        />
+      )}
+
+      {editModalOpen && (
+        <EditModal
+          flower={selectedFlower}
+          onConfirm={handleEditConfirm}
+          onCancel={handleEditCancel}
+          loading={editLoading}
         />
       )}
 

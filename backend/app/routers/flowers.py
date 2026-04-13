@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, Query, HTTPException
+from fastapi import APIRouter, Depends, Query, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
 from typing import List
@@ -10,6 +10,8 @@ from ..schemas import FlowerResponse, SellRequest
 from ..jwt_handler import verify_token
 
 router = APIRouter()
+
+ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif", "image/bmp"}
 
 
 def _to_response(flower: Flower) -> dict:
@@ -69,6 +71,45 @@ def sell_flower(
         user_login=current_user.login,
     )
     db.add(operation)
+    db.commit()
+    db.refresh(flower)
+
+    return _to_response(flower)
+
+
+@router.put("/api/flowers/{flower_id}/photo")
+async def update_flower_photo(
+    flower_id: int,
+    file: UploadFile = File(...),
+    current_user: User = Depends(verify_token),
+    db: Session = Depends(get_db),
+):
+    # 1. Check flower exists
+    flower = db.query(Flower).filter(Flower.id == flower_id).first()
+    if not flower:
+        raise HTTPException(status_code=404, detail="Flower not found")
+
+    # 2. Check flower is not already sold
+    if flower.sell_price is not None or flower.sell_date is not None:
+        raise HTTPException(status_code=409, detail="Cannot update photo of a sold flower")
+
+    # 3. Validate file is an image
+    if file.content_type not in ALLOWED_IMAGE_TYPES:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid file type: {file.content_type}. Allowed: {', '.join(sorted(ALLOWED_IMAGE_TYPES))}",
+        )
+
+    # 4. Read and store photo
+    photo_data = await file.read()
+    if not photo_data:
+        raise HTTPException(status_code=400, detail="Empty file")
+
+    # Limit to 5MB
+    if len(photo_data) > 5 * 1024 * 1024:
+        raise HTTPException(status_code=400, detail="File too large (max 5MB)")
+
+    flower.foto = photo_data
     db.commit()
     db.refresh(flower)
 
