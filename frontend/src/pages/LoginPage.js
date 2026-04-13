@@ -20,7 +20,8 @@ function LoginPage() {
 
     try {
       await login(username, password);
-      navigate(from, { replace: true });
+      // Full reload so App.js re-fetches profile via getProfile()
+      window.location.href = from;
     } catch (err) {
       if (err.response?.status === 401) {
         setError('Неверный логин или пароль');
