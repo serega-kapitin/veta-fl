@@ -7,8 +7,13 @@ export const login = async (login, password) => {
   return access_token;
 };
 
-export const getMe = async () => {
-  const response = await api.get('/me');
+export const getProfile = async () => {
+  const response = await api.get('/profile');
+  return response.data;
+};
+
+export const updateProfile = async (data) => {
+  const response = await api.put('/profile', data);
   return response.data;
 };
 

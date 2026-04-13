@@ -40,7 +40,7 @@ def verify_token(
             SECRET_KEY,
             algorithms=[ALGORITHM]
         )
-        login: int = payload.get("sub")
+        login: str = payload.get("sub")
         if login is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,

@@ -1,31 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
-import { getMe } from '../services/auth';
+import { updateProfile } from '../services/auth';
 import './ProfilePage.css';
 
-function ProfilePage({ currentUser }) {
+function ProfilePage({ currentUser, onUpdateProfile }) {
   const navigate = useNavigate();
-  const [login, setLogin] = useState(currentUser?.login || '');
+  const [name, setName] = useState(currentUser?.name || '');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const user = await getMe();
-        setLogin(user.login);
-      } catch {
-        // ignore
-      }
-    };
-    fetchUser();
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,13 +27,29 @@ function ProfilePage({ currentUser }) {
 
     setLoading(true);
     try {
-      // TODO: call API to update profile
+      const data = {};
+      if (name !== currentUser?.name) {
+        data.name = name || null;
+      }
+      if (currentPassword && newPassword) {
+        data.current_password = currentPassword;
+        data.new_password = newPassword;
+      }
+
+      const updated = await updateProfile(data);
+      if (onUpdateProfile) {
+        onUpdateProfile(updated);
+      }
       setSuccess('Профиль обновлён');
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
-    } catch {
-      setError('Ошибка при сохранении');
+    } catch (err) {
+      if (err.response?.status === 401) {
+        setError('Неверный текущий пароль');
+      } else {
+        setError('Ошибка при сохранении');
+      }
     } finally {
       setLoading(false);
     }
@@ -70,9 +74,19 @@ function ProfilePage({ currentUser }) {
                 <input
                   id="profile-login"
                   type="text"
-                  value={login}
-                  onChange={(e) => setLogin(e.target.value)}
+                  value={currentUser?.login || ''}
                   disabled
+                />
+              </div>
+
+              <div className="form-field">
+                <label htmlFor="profile-name">Имя</label>
+                <input
+                  id="profile-name"
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Введите имя"
                 />
               </div>
 

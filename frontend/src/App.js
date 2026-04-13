@@ -4,22 +4,22 @@ import LoginPage from './pages/LoginPage';
 import MainPage from './pages/MainPage';
 import ProfilePage from './pages/ProfilePage';
 import PrivateRoute from './components/PrivateRoute';
-import { getMe } from './services/auth';
+import { getProfile } from './services/auth';
 import './App.css';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchProfile = async () => {
       try {
-        const user = await getMe();
-        setCurrentUser(user);
+        const profile = await getProfile();
+        setCurrentUser(profile);
       } catch {
-        setCurrentUser({ login: 'user' });
+        setCurrentUser({ login: 'user', name: null });
       }
     };
-    fetchUser();
+    fetchProfile();
   }, []);
 
   return (
@@ -38,7 +38,10 @@ function App() {
           path="/profile"
           element={
             <PrivateRoute>
-              <ProfilePage currentUser={currentUser} />
+              <ProfilePage
+                currentUser={currentUser}
+                onUpdateProfile={setCurrentUser}
+              />
             </PrivateRoute>
           }
         />

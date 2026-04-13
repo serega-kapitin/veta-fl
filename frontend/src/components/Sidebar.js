@@ -48,10 +48,12 @@ function Sidebar({ currentUser }) {
       <div className="sidebar-footer">
         <button className="sidebar-user" onClick={handleProfileClick} type="button">
           <div className="sidebar-user-avatar">
-            {currentUser?.login?.charAt(0).toUpperCase() || 'U'}
+            {(currentUser?.name || currentUser?.login || 'U').charAt(0).toUpperCase()}
           </div>
           <div className="sidebar-user-info">
-            <span className="sidebar-user-name">{currentUser?.login || 'Пользователь'}</span>
+            <span className="sidebar-user-name">
+              {currentUser?.name || currentUser?.login || 'Пользователь'}
+            </span>
           </div>
         </button>
         <button className="sidebar-logout" onClick={handleLogout}>
