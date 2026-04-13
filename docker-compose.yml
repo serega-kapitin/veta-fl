@@ -11,12 +11,15 @@ services:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5433:5432"
-      
     networks:
       - vetafl_network
 
   backend:
-    build: ./backend
+    build:
+      context: ./backend
+      cache_from:
+        - veta-fl-backend:latest
+    image: veta-fl-backend:latest
     container_name: fastapi_backend
     restart: always
     environment:
@@ -24,20 +27,21 @@ services:
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
       JWT_ALGORITHM: ${JWT_ALGORITHM}
       ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES}
-      # другие переменные окружения
     depends_on:
       - postgres
     networks:
       - vetafl_network
-    # не открываем порт наружу, доступ через nginx
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      cache_from:
+        - veta-fl-frontend:latest
+    image: veta-fl-frontend:latest
     container_name: react_frontend
     restart: always
     networks:
       - vetafl_network
-    # не открываем порт наружу, доступ через nginx
 
   nginx:
     image: nginx:stable-alpine
