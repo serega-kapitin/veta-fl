@@ -1,31 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
-import { getMe } from '../services/auth';
 import './ProfilePage.css';
 
 function ProfilePage({ currentUser }) {
   const navigate = useNavigate();
-  const [login, setLogin] = useState(currentUser?.login || '');
+  const [login] = useState(currentUser?.login || '');
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const user = await getMe();
-        setLogin(user.login);
-      } catch {
-        // ignore
-      }
-    };
-    fetchUser();
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,7 +58,6 @@ function ProfilePage({ currentUser }) {
                   id="profile-login"
                   type="text"
                   value={login}
-                  onChange={(e) => setLogin(e.target.value)}
                   disabled
                 />
               </div>

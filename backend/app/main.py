@@ -5,7 +5,6 @@ from .database import get_db
 from .models import User
 from .schemas import AuthRequest
 from .jwt_handler import create_access_token
-from .jwt_handler import verify_token
 from datetime import timedelta
 
 app = FastAPI()
@@ -26,7 +25,3 @@ def authenticate(auth_data: AuthRequest, db: Session = Depends(get_db)):
     # Создаем токен
     access_token = create_access_token(data={"sub": user.login})
     return {"access_token": access_token, "token_type": "bearer"}
-
-@app.get("/api/me")
-def read_users_me(current_user: User = Depends(verify_token)):
-    return {"login": current_user.login, "password": current_user.password}
