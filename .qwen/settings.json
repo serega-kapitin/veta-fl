@@ -1,7 +1,31 @@
 {
   "permissions": {
     "allow": [
-      "Bash(ls *)"
+      "Bash(ls *)",
+      "Bash(git checkout *)",
+      "Bash(npm install *)",
+      "Bash(mkdir *)",
+      "Bash(npm run *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(test *)",
+      "Bash(docker-compose *)",
+      "Bash(docker compose up *)",
+      "Bash(docker compose ps)",
+      "Bash(docker compose logs *)",
+      "Bash(curl *)",
+      "Bash(docker compose *)",
+      "Bash(sleep *)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(docker exec *)",
+      "Bash(git pull *)",
+      "Bash(python *)",
+      "Bash(python3 *)",
+      "Bash(touch *)",
+      "Bash(make *)",
+      "Bash(docker images)"
     ]
-  }
+  },
+  "$version": 3
 }
