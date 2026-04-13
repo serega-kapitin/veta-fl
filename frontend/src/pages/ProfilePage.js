@@ -59,7 +59,7 @@ function ProfilePage({ currentUser }) {
     <div className="main-layout">
       <Sidebar currentUser={currentUser} />
       <div className="main-content">
-        <Header title="Профиль пользователя" onProfileClick={handleBack} />
+        <Header title="Профиль пользователя" />
         <div className="profile-container">
           <div className="profile-card">
             <h2 className="profile-title">Редактирование профиля</h2>

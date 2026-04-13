@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { logout } from '../services/auth';
 import './Sidebar.css';
 
@@ -12,9 +12,15 @@ const navItems = [
 ];
 
 function Sidebar({ currentUser }) {
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     logout();
     window.location.href = '/login';
+  };
+
+  const handleProfileClick = () => {
+    navigate('/profile');
   };
 
   return (
@@ -40,14 +46,14 @@ function Sidebar({ currentUser }) {
       </nav>
 
       <div className="sidebar-footer">
-        <div className="sidebar-user">
+        <button className="sidebar-user" onClick={handleProfileClick} type="button">
           <div className="sidebar-user-avatar">
             {currentUser?.login?.charAt(0).toUpperCase() || 'U'}
           </div>
           <div className="sidebar-user-info">
             <span className="sidebar-user-name">{currentUser?.login || 'Пользователь'}</span>
           </div>
-        </div>
+        </button>
         <button className="sidebar-logout" onClick={handleLogout}>
           Выйти
         </button>
