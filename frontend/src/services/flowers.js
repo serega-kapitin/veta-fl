@@ -1,7 +1,8 @@
 import api from './api';
 
 export const getFlowers = async (sold = false) => {
-  const response = await api.get('/flowers', { params: { sold } });
+  const params = sold ? { sold: true } : {};
+  const response = await api.get('/flowers', { params });
   return response.data;
 };
 

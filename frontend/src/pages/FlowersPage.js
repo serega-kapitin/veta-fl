@@ -69,7 +69,7 @@ function FlowersPage({ currentUser }) {
                 checked={filter}
                 onChange={(e) => setFilter(e.target.checked)}
               />
-              <span>Проданные</span>
+              <span>Включая проданные</span>
             </label>
             <button className="btn btn--secondary" onClick={fetchFlowers}>
               ↻

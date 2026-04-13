@@ -25,13 +25,14 @@ def _to_response(flower: Flower) -> dict:
 
 @router.get("/api/flowers", response_model=List[FlowerResponse])
 def get_flowers(
-    sold: bool = Query(False, description="Filter sold/unsold flowers"),
+    sold: bool = Query(False, description="Include sold flowers in results"),
     current_user: User = Depends(verify_token),
     db: Session = Depends(get_db),
 ):
     query = db.query(Flower)
+    # sold=False (default): only unsold flowers
+    # sold=True: all flowers (sold + unsold)
     if sold is False:
         query = query.filter(and_(Flower.sell_price.is_(None), Flower.sell_date.is_(None)))
-    elif sold is True:
-        query = query.filter(and_(Flower.sell_price.isnot(None), Flower.sell_date.isnot(None)))
+    # sold=True: no filter — return all
     return [_to_response(f) for f in query.all()]
