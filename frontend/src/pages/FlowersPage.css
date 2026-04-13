@@ -217,7 +217,7 @@
 }
 
 .flowers-toolbar .btn--edit--active:hover {
-  background: #fdd835;
+  background: #ffffcc;
 }
 
 /* ===== Action buttons: Sell (pink) ===== */
@@ -242,5 +242,5 @@
 }
 
 .flowers-toolbar .btn--sell--active:hover {
-  background: #f8bbd0;
+  background: #ffeef2;
 }
