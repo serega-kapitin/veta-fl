@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { logout } from '../services/auth';
 import './Sidebar.css';
 
@@ -12,11 +12,9 @@ const navItems = [
 ];
 
 function Sidebar({ currentUser }) {
-  const navigate = useNavigate();
-
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    window.location.href = '/login';
   };
 
   return (
