@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
-import { getFlowers } from '../services/flowers';
+import SellModal from '../components/SellModal';
+import { getFlowers, sellFlower } from '../services/flowers';
 import './FlowersPage.css';
 
 function FlowersPage({ currentUser }) {
@@ -9,6 +10,9 @@ function FlowersPage({ currentUser }) {
   const [selectedId, setSelectedId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState(false);
+  const [sellModalOpen, setSellModalOpen] = useState(false);
+  const [sellLoading, setSellLoading] = useState(false);
+  const [sellError, setSellError] = useState('');
 
   const fetchFlowers = async () => {
     setLoading(true);
@@ -35,6 +39,33 @@ function FlowersPage({ currentUser }) {
   const selectedFlower = flowers.find((f) => f.id === selectedId) || null;
   const hasSelection = selectedId !== null;
 
+  const handleSellClick = () => {
+    if (hasSelection) {
+      setSellError('');
+      setSellModalOpen(true);
+    }
+  };
+
+  const handleSellConfirm = async (price) => {
+    setSellLoading(true);
+    setSellError('');
+    try {
+      await sellFlower(selectedId, price);
+      setSellModalOpen(false);
+      fetchFlowers();
+    } catch (err) {
+      const msg = err.response?.data?.detail || 'Ошибка при продаже';
+      setSellError(msg);
+    } finally {
+      setSellLoading(false);
+    }
+  };
+
+  const handleSellCancel = () => {
+    setSellModalOpen(false);
+    setSellError('');
+  };
+
   const formatPrice = (price) =>
     price != null ? `${price.toLocaleString('ru-RU')} ₽` : '—';
 
@@ -58,6 +89,7 @@ function FlowersPage({ currentUser }) {
             <button
               className={`btn ${hasSelection ? 'btn--sell btn--sell--active' : 'btn--sell'}`}
               disabled={!hasSelection}
+              onClick={handleSellClick}
             >
               Продать цветок
             </button>
@@ -141,6 +173,32 @@ function FlowersPage({ currentUser }) {
           )}
         </div>
       </div>
+
+      {sellModalOpen && (
+        <SellModal
+          flower={selectedFlower}
+          onConfirm={handleSellConfirm}
+          onCancel={handleSellCancel}
+          loading={sellLoading}
+        />
+      )}
+
+      {sellError && (
+        <div className="modal-overlay" onClick={() => setSellError('')}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2 className="modal-title modal-title--error">Ошибка</h2>
+            <p className="modal-flower-name">{sellError}</p>
+            <div className="modal-actions">
+              <button
+                className="btn btn--secondary"
+                onClick={() => setSellError('')}
+              >
+                Закрыть
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

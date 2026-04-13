@@ -21,3 +21,7 @@ class FlowerResponse(BaseModel):
     @field_serializer('foto_base64')
     def serialize_foto(self, v: Optional[str], _info) -> Optional[str]:
         return v
+
+
+class SellRequest(BaseModel):
+    sell_price: float

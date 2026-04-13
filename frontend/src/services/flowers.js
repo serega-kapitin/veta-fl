@@ -16,8 +16,8 @@ export const updateFlower = async (id, data) => {
   return response.data;
 };
 
-export const sellFlower = async (id, data) => {
-  const response = await api.post(`/flowers/${id}/sell`, data);
+export const sellFlower = async (id, sellPrice) => {
+  const response = await api.post(`/flowers/${id}/sell`, { sell_price: sellPrice });
   return response.data;
 };
 

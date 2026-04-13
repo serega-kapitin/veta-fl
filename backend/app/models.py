@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, Date, LargeBinary
+from sqlalchemy import Column, Integer, String, Float, Date, LargeBinary, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -21,3 +21,15 @@ class Flower(Base):
     buy_date = Column(Date, nullable=True)
     sell_price = Column(Float, nullable=True)
     sell_date = Column(Date, nullable=True)
+
+
+class Operation(Base):
+    __tablename__ = "operation"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    operation_type = Column(String, nullable=False)  # 'SELL', 'BUY', etc.
+    flower_id = Column(Integer, ForeignKey("flower.id"), nullable=False)
+    date = Column(Date, nullable=False)
+    price_add = Column(Float, nullable=True)
+    price_subtr = Column(Float, nullable=True)
+    user_login = Column(String, ForeignKey("user.login"), nullable=False)
