@@ -1,0 +1,136 @@
+/* ===== Login Page ===== */
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e8f5e9 0%, #fce4ec 50%, #f3e5f5 100%);
+  padding: 20px;
+}
+
+.login-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 40px 32px;
+  width: 100%;
+  max-width: 380px;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-logo {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+.login-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #2e7d32;
+  margin: 0;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  color: #757575;
+  margin: 4px 0 0;
+}
+
+/* ===== Form ===== */
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #424242;
+}
+
+.form-group input {
+  padding: 12px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #66bb6a;
+  box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.2);
+}
+
+.form-group input::placeholder {
+  color: #bdbdbd;
+}
+
+.form-group input:disabled {
+  background: #f5f5f5;
+  cursor: not-allowed;
+}
+
+/* ===== Error ===== */
+
+.error-message {
+  background: #ffebee;
+  color: #c62828;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ===== Button ===== */
+
+.login-button {
+  padding: 13px;
+  background: #43a047;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.login-button:hover:not(:disabled) {
+  background: #388e3c;
+}
+
+.login-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.login-button:disabled {
+  background: #a5d6a7;
+  cursor: not-allowed;
+}
+
+/* ===== Footer ===== */
+
+.login-footer {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.login-footer p {
+  font-size: 12px;
+  color: #9e9e9e;
+}
