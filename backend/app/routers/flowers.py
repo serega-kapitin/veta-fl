@@ -105,9 +105,9 @@ async def update_flower_photo(
     if not photo_data:
         raise HTTPException(status_code=400, detail="Empty file")
 
-    # Limit to 5MB
-    if len(photo_data) > 5 * 1024 * 1024:
-        raise HTTPException(status_code=400, detail="File too large (max 5MB)")
+    # Limit to 20MB
+    if len(photo_data) > 20 * 1024 * 1024:
+        raise HTTPException(status_code=400, detail="File too large (max 20MB)")
 
     flower.foto = photo_data
     db.commit()

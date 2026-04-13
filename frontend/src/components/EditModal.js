@@ -19,12 +19,31 @@ function EditModal({ flower, onConfirm, onCancel, loading }) {
       return;
     }
 
+    // Validate file size (20MB)
+    if (file.size > 20 * 1024 * 1024) {
+      setError('Файл слишком большой (максимум 20 МБ)');
+      return;
+    }
+
     try {
       await onConfirm(file);
       setSuccess('Фото обновлено');
+      // Reset file input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
     } catch (err) {
-      const msg = err.response?.data?.detail || 'Ошибка при загрузке';
-      setError(msg);
+      // Handle nginx 413 error (HTML response)
+      if (err.response?.status === 413) {
+        setError('Файл слишком большой (максимум 20 МБ)');
+      } else if (err.response?.data?.detail) {
+        setError(err.response.data.detail);
+      } else if (err.response?.data && typeof err.response.data === 'string') {
+        // Nginx HTML error page
+        setError('Ошибка загрузки файла');
+      } else {
+        setError('Ошибка при загрузке фото');
+      }
     }
   };
 
