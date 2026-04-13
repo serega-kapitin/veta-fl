@@ -218,3 +218,4 @@ __marimo__/
 
 # Test artifacts
 backend/test_*.db
+frontend/coverage/

@@ -24,7 +24,14 @@
       "Bash(python3 *)",
       "Bash(touch *)",
       "Bash(make *)",
-      "Bash(docker images)"
+      "Bash(docker images)",
+      "Bash(pip install *)",
+      "Bash(pytest *)",
+      "Bash(.venv/bin/pip *)",
+      "Bash(.venv/bin/pytest *)",
+      "Bash(npm test *)",
+      "Bash(rm *)",
+      "Bash(cat *)"
     ]
   },
   "$version": 3
