@@ -13,12 +13,12 @@ up: ## Start all services
 down: ## Stop all services
 	docker compose down
 
-build: ## Rebuild and start (local cache only, no registry pull)
-	docker compose build --pull=never
+build: ## Rebuild and start (local cache only)
+	docker compose build
 	docker compose up -d
 
-rebuild: ## Force rebuild without cache (no registry pull)
-	docker compose build --pull=never --no-cache
+rebuild: ## Force rebuild without cache
+	docker compose build --no-cache
 	docker compose up -d
 
 logs: ## Show logs from all services
