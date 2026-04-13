@@ -21,8 +21,24 @@ function SellModal({ flower, onConfirm, onCancel, loading }) {
   return (
     <div className="modal-overlay" onClick={onCancel}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <h2 className="modal-title">Продажа цветка</h2>
-        <p className="modal-flower-name">{flower.name}</p>
+        <div className="modal-flower-info">
+          {flower.foto_base64 && (
+            <img
+              src={`data:image/png;base64,${flower.foto_base64}`}
+              alt={flower.name}
+              className="modal-flower-photo"
+            />
+          )}
+          <div className="modal-flower-details">
+            <h2 className="modal-title">Продажа цветка</h2>
+            <p className="modal-flower-name">{flower.name}</p>
+            {flower.buy_price != null && (
+              <p className="modal-flower-buy-price">
+                Покупка: {flower.buy_price.toLocaleString('ru-RU')} ₽
+              </p>
+            )}
+          </div>
+        </div>
 
         <form onSubmit={handleSubmit}>
           <div className="form-field">
