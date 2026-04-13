@@ -71,3 +71,6 @@ uvicorn backend.app.main:app --reload --port 8000
 - `JWT_SECRET_KEY`
 - `JWT_ALGORITHM` (default: HS256)
 - `ACCESS_TOKEN_EXPIRE_MINUTES` (default: 30)
+
+## Qwen Added Memories
+- Veta-FL — это бухгалтерское приложение для нескольких пользователей, где ведутся приходно-расходные операции покупок и продаж цветов, сопутствующих товаров и расходных материалов.
