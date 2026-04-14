@@ -5,10 +5,7 @@ import './Sidebar.css';
 
 const navItems = [
   { path: '/', label: 'Операции', icon: '📋' },
-  { path: '/counterparties', label: 'Контрагенты', icon: '👥' },
-  { path: '/warehouse', label: 'Склад', icon: '' },
-  { path: '/reports', label: 'Отчёты', icon: '📊' },
-  { path: '/settings', label: 'Настройки', icon: '⚙️' },
+  { path: '/flowers', label: 'Цветы', icon: '🌸' },
 ];
 
 function Sidebar({ currentUser }) {

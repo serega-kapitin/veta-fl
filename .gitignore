@@ -215,3 +215,7 @@ __marimo__/
 
 # Qwen
 .qwen/
+
+# Test artifacts
+backend/test_*.db
+frontend/coverage/

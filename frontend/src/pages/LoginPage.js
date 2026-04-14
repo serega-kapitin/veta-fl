@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { login } from '../services/auth';
 import './LoginPage.css';
 
@@ -8,7 +8,6 @@ function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
 
   const from = location.state?.from?.pathname || '/';

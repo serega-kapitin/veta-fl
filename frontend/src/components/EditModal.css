@@ -1,0 +1,162 @@
+/* ===== Edit Modal ===== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  padding: 28px 24px;
+  width: 100%;
+  max-width: 380px;
+}
+
+/* ===== Flower Info ===== */
+
+.modal-flower-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.modal-flower-photo {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.modal-flower-photo--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  color: #bdbdbd;
+  font-size: 20px;
+}
+
+.modal-flower-details {
+  flex: 1;
+  min-width: 0;
+}
+
+.modal-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #2e7d32;
+  margin: 0 0 2px;
+}
+
+.modal-flower-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333333;
+  margin: 0 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.modal-flower-buy-price {
+  font-size: 12px;
+  color: #757575;
+  margin: 0;
+}
+
+/* ===== Edit Actions ===== */
+
+.edit-actions {
+  margin-bottom: 16px;
+}
+
+.file-input-hidden {
+  display: none;
+}
+
+.btn--edit-photo {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: #fff9c4;
+  color: #f57f17;
+  border: 1px solid #fdd835;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn--edit-photo:hover:not(:disabled) {
+  background: #ffffcc;
+}
+
+.btn--edit-photo:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ===== Messages ===== */
+
+.modal-content .error-message {
+  background: #ffebee;
+  color: #c62828;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.modal-content .success-message {
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+/* ===== Modal Actions ===== */
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.modal-actions .btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.modal-actions .btn--secondary {
+  background: #ffffff;
+  color: #424242;
+  border-color: #e0e0e0;
+}
+
+.modal-actions .btn--secondary:hover:not(:disabled) {
+  background: #f5f5f5;
+}
+
+.modal-actions .btn--secondary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
