@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends, Query, HTTPException, UploadFile, File
+from fastapi import APIRouter, Depends, Query, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from sqlalchemy import and_
-from typing import List
+from typing import List, Optional
 import base64
 from datetime import date
 from ..database import get_db
@@ -112,5 +112,71 @@ async def update_flower_photo(
     flower.foto = photo_data
     db.commit()
     db.refresh(flower)
+
+    return _to_response(flower)
+
+
+@router.post("/api/flowers/buy")
+def buy_flower(
+    name: str = Form(...),
+    buy_price: float = Form(...),
+    file: Optional[UploadFile] = File(None),
+    current_user: User = Depends(verify_token),
+    db: Session = Depends(get_db),
+):
+    """
+    Buy a new flower.
+    - name: required
+    - buy_price: required
+    - file: optional image (jpeg, png, webp, gif, bmp) max 20MB
+    """
+    # Validate name
+    if not name or not name.strip():
+        raise HTTPException(status_code=400, detail="Flower name is required")
+    name = name.strip()
+
+    # Validate buy_price
+    if buy_price < 0:
+        raise HTTPException(status_code=400, detail="Buy price must be non-negative")
+
+    # Process optional file
+    foto_data = None
+    if file is not None:
+        # Validate file type
+        if file.content_type not in ALLOWED_IMAGE_TYPES:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid file type: {file.content_type}. Allowed: {', '.join(sorted(ALLOWED_IMAGE_TYPES))}",
+            )
+        # Read file
+        foto_data = file.file.read()
+        if not foto_data:
+            raise HTTPException(status_code=400, detail="Empty file")
+        # Limit size
+        if len(foto_data) > 20 * 1024 * 1024:
+            raise HTTPException(status_code=400, detail="File too large (max 20MB)")
+
+    # Create flower record
+    flower = Flower(
+        name=name,
+        buy_price=buy_price,
+        buy_date=date.today(),
+        foto=foto_data,
+    )
+    db.add(flower)
+    db.commit()
+    db.refresh(flower)
+
+    # Create operation record for BUY
+    operation = Operation(
+        operation_type="BUY",
+        flower_id=flower.id,
+        date=date.today(),
+        price_add=buy_price,
+        price_subtr=0.0,
+        user_login=current_user.login,
+    )
+    db.add(operation)
+    db.commit()
 
     return _to_response(flower)
