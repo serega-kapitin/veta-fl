@@ -1,5 +1,9 @@
 """Tests for backend API endpoints."""
 
+import os
+os.environ["JWT_SECRET_KEY"] = "test-secret-key-for-testing"
+os.environ["JWT_ALGORITHM"] = "HS256"
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
@@ -32,12 +36,6 @@ def override_get_db():
 
 
 app.dependency_overrides[get_db] = override_get_db
-
-# Use in-memory SQLite secret for tests
-import os
-
-os.environ["JWT_SECRET_KEY"] = "test-secret-key-for-testing"
-os.environ["JWT_ALGORITHM"] = "HS256"
 
 
 @pytest.fixture(autouse=True)

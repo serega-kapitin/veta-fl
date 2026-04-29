@@ -12,10 +12,10 @@ SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 30))
 # Создаём экземпляр HTTPBearer
-security = HTTPBearer()
-
-
-def create_access_token(data: dict, expires_delta: timedelta | None = None):
+ security = HTTPBearer()
+ 
+ 
+ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta

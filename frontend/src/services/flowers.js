@@ -30,6 +30,19 @@ export const updateFlowerPhoto = async (id, file) => {
   return response.data;
 };
 
+export const buyFlower = async (data) => {
+  const formData = new FormData();
+  formData.append('name', data.name);
+  formData.append('buy_price', String(data.buyPrice));
+  if (data.photo) {
+    formData.append('file', data.photo);
+  }
+  const response = await api.post(`/flowers/buy`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return response.data;
+};
+
 export const deleteFlower = async (id) => {
   await api.delete(`/flowers/${id}`);
 };

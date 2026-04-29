@@ -3,7 +3,8 @@ import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 import SellModal from '../components/SellModal';
 import EditModal from '../components/EditModal';
-import { getFlowers, sellFlower, updateFlowerPhoto } from '../services/flowers';
+import BuyModal from '../components/BuyModal';
+import { getFlowers, sellFlower, updateFlowerPhoto, buyFlower } from '../services/flowers';
 import './FlowersPage.css';
 
 function FlowersPage({ currentUser }) {
@@ -16,6 +17,9 @@ function FlowersPage({ currentUser }) {
   const [sellError, setSellError] = useState('');
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editLoading, setEditLoading] = useState(false);
+  const [buyModalOpen, setBuyModalOpen] = useState(false);
+  const [buyLoading, setBuyLoading] = useState(false);
+  const [buyError, setBuyError] = useState('');
 
   // Sorting state: { field, dir } where dir: 'asc' | 'desc' | null
   const [sort, setSort] = useState({ field: null, dir: null });
@@ -70,6 +74,31 @@ function FlowersPage({ currentUser }) {
   const handleSellCancel = () => {
     setSellModalOpen(false);
     setSellError('');
+  };
+
+  const handleBuyClick = () => {
+    setBuyError('');
+    setBuyModalOpen(true);
+  };
+
+  const handleBuyConfirm = async (data) => {
+    setBuyLoading(true);
+    setBuyError('');
+    try {
+      await buyFlower(data);
+      setBuyModalOpen(false);
+      fetchFlowers();
+    } catch (err) {
+      const msg = err.response?.data?.detail || 'Ошибка при покупке';
+      setBuyError(msg);
+    } finally {
+      setBuyLoading(false);
+    }
+  };
+
+  const handleBuyCancel = () => {
+    setBuyModalOpen(false);
+    setBuyError('');
   };
 
   const handleEditClick = () => {
@@ -136,7 +165,9 @@ function FlowersPage({ currentUser }) {
 
         <div className="flowers-toolbar">
           <div className="toolbar-left">
-            <button className="btn btn--primary">+ Купить цветок</button>
+            <button className="btn btn--primary" onClick={handleBuyClick}>
+              + Купить цветок
+            </button>
             <button
               className={`btn ${hasSelection ? 'btn--edit btn--edit--active' : 'btn--edit'}`}
               disabled={!hasSelection}
@@ -285,6 +316,30 @@ function FlowersPage({ currentUser }) {
             </div>
           </div>
         </div>
+      )}
+      {buyError && (
+        <div className="modal-overlay" onClick={() => setBuyError('')}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h2 className="modal-title modal-title--error">Ошибка</h2>
+            <p className="modal-flower-name">{buyError}</p>
+            <div className="modal-actions">
+              <button
+                className="btn btn--secondary"
+                onClick={() => setBuyError('')}
+              >
+                Закрыть
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {buyModalOpen && (
+        <BuyModal
+          flower={selectedFlower}
+          onConfirm={handleBuyConfirm}
+          onCancel={handleBuyCancel}
+          loading={buyLoading}
+        />
       )}
     </div>
   );
